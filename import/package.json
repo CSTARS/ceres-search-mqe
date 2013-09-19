@@ -1,0 +1,11 @@
+{
+  "name": "ceres-search-mqe-import",
+  "version": "0.0.1",
+  "author": "Justin Merz <jrmerz@gmail.com>",
+  "description": "Ceres Library Search Cbase Import",
+  "dependencies" : {
+    "mongodb"           : "*",
+    "pg"                      : "*",
+    "proj4js"               : "*"
+  }
+}

@@ -1,0 +1,153 @@
+/******
+ * General CSS
+ ******/
+.filter-block {
+	display : none;
+}
+
+.search-block-title {
+	cursor      : pointer;
+	font-weight : bold;
+}
+
+.search-result-row {
+	margin : 2px;
+	padding : 10px 15px 15px 15px;
+}
+
+#results-panel .search-result-row:nth-child(even) {
+	background-color : #f5f5f5;
+	
+	border-radius         : 4px;
+	-moz-border-radius    : 4px;
+	-webkit-border-radius : 4px;
+}
+
+.search-result-row h6 {
+	margin: 0px;
+	border-bottom: 1px solid #eee;
+}
+
+.showall-link-box {
+	border                : 1px solid #e5e5e5;
+	padding               : 15px;
+	margin-top            : 25px;
+	
+	border-radius         : 4px;
+	-moz-border-radius    : 4px;
+	-webkit-border-radius : 4px;
+}
+
+#all .pagination ul>li>a, .pagination ul>li>span {
+	padding: 2px 6px !important;
+}
+
+.result-filter-list {
+	padding: 10px;	
+}
+
+#lp .nav.nav-tabs.nav-stacked {
+	margin-left: 10px;	
+}
+
+#result h4 {
+	margin-top : 40px;
+	margin-bottom : 5px;
+}
+
+#result h5 {
+	margin-top : 8px;
+	margin-bottom : 2px;
+}
+
+.help-text {
+	font-size   : 11px;
+	text-shadow : 0 1px 0 rgba(255,255,255,0.5);
+	color       : #888;
+}
+
+del {
+	color : #b94a48;
+	border-radius : 5px;
+	-moz-border-radius : 5px;
+	-webkit-border-radius : 5px;
+}
+
+ins {
+	color : #468847;
+	
+	border-radius : 5px;
+	-webkit-border-radius : 5px;
+	-moz-border-radius : 5px;
+}
+
+.aboutPanel {
+	position : fixed;
+	top: 50px;
+	left: 50%;
+	width: 75%;
+	padding : 30px 20px;
+	background : url("/images/aboutbg.png") 350px 0 no-repeat white;
+	
+	border: 1px solid #aaa;
+	
+	box-shadow: 0 0 20px #aaa;
+	-moz-box-shadow: 0 0 20px #aaa;
+	-webkit-box-shadow: 0 0 20px #aaa;
+	-ms-box-shadow: 0 0 20px #aaa;
+}
+
+.aboutPanel-title {
+	color: #666666;
+	font-size: 26px;
+	padding: 10px;
+}
+
+.aboutPanel-title-sub {
+	color: #aaaaaa;
+	font-size: 16px;
+	vertical-align: middle;
+}
+
+/******
+ * Bootstrap Mods
+ ******/
+.nav-list {
+	padding : 0px;
+}
+
+/**
+ *  Fix broken google map images
+ */
+#geo-filter-map img {
+	max-width: none;
+}
+
+/***
+ *  State template overrides
+ ***/
+#anchor h2 {
+	border: none !important;
+}
+
+#anchor a:link {
+	color: #2fa4e7;
+}
+
+#middle_column #anchor ul li {
+	list-style-image : none;
+	margin-bottom: 5px;
+}
+
+#anchor a:visited {
+	color: #2fa4e7;
+}
+
+#anchor .btn:link {
+	color: white !important;
+}
+
+#anchor .btn:visited {
+	color: white !important;
+}
+

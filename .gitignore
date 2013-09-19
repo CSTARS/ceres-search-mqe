@@ -1,0 +1,6 @@
+server/node_modules
+import/node_modules
+data/node_modules
+import/previewGenerator/node_modules
+server/public/images/preview/*
+*.DS_Store

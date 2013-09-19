@@ -1,0 +1,17 @@
+{
+  "name": "ceres-search-mqe",
+  "version": "0.0.1",
+  "author": "Justin Merz <jrmerz@gmail.com>",
+  "description": "Ceres Library Search",
+  "dependencies" : {
+    "express"           : "*",
+    "mongodb"           : "*",
+    "csv"               : "*",
+    "passport"          : "*",
+    "passport-google"   : "*",
+    "passport-facebook" : "*",
+    "passport-twitter"  : "*",
+    "excel-export"      : "*",
+    "nodemailer"       : "*"
+  }
+}

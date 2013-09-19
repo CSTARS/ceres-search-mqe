@@ -1,0 +1,73 @@
+<script id="result-template" type="text/x-handlebars-template">
+  
+  <div style='text-align:right'><a class='btn btn-link result-back-btn'>Back to Search Results</a></div>
+  
+  <div class="row-fluid" style="margin-bottom:20px">
+    
+  
+	  <div class="span8 result-title-row" style="vertical-align:top">
+		  <h3>{{title}}</h3>
+		  {{#if description}}
+		    <div style="padding:10px">{{description}}</div>
+		  {{/if}}
+		  <div class="resource-btns result-filter-list"></div>
+	  </div>
+	  
+	  <div class="offset1 span3 result-map-row" >
+	  	<div id="result-map-{{id}}" class="pull-right"></div>
+	  </div>
+	  
+  </div>
+  
+	
+	<div class="row-fluid">
+		  {{#if Topic}}
+		  	<div class="result-filter-list span4">
+			    <h4>Topics</h4>
+			    <ul class="nav nav-tabs nav-stacked">{{#result-list Topic}}Topic{{/result-list}}</ul>
+		    </div>
+		  {{/if}}
+		  
+		  {{#if Contributor}}
+		  	<div class="result-filter-list span4">
+			    <h4>Contributors</h4>
+			    <ul class="nav nav-tabs nav-stacked">{{#result-list Contributor}}Contributor{{/result-list}}</ul>
+		    </div>
+		  {{/if}}
+		  
+		  {{#if Publisher}}
+		  	<div class="result-filter-list span4">
+			    <h4>Publishers</h4>
+			    <ul class="nav nav-tabs nav-stacked">{{#result-list Publisher}}Publisher{{/result-list}}</ul>
+		    </div>
+		  {{/if}}
+  </div>
+  
+  {{#if Keyword}}
+  	<div class="result-filter-list">
+	    <h4>Keywords</h4>
+	    <div style='padding-left:10px'>{{#result-list-plain Keyword}}{{/result-list-plain}}</div>
+    </div>
+  {{/if}}
+  
+  {{#if Group}}
+  	<div class="result-filter-list">
+	    <h4>Workgroups</h4>
+	    <ul class="nav nav-tabs nav-stacked">{{#result-list Group}}Group{{/result-list}}</ul>
+    </div>
+  {{/if}}
+  
+  <div class="well" id="result-uptime-outer" style="margin: 15px 0">
+  	<div id="result-uptime"></div>
+  </div>
+  
+  {{#if [Date Entered]}}
+  	<div class="result-filter-list" id="result-date-entered">
+	    <h4>Date Entered</h4>
+	    <div style='padding-left:10px'>{{[Date Entered]}}</div>
+    </div>
+  {{/if}}
+  
+   <div style='text-align:right'><a class='btn btn-link result-back-btn'>Back to Search Results</a></div>
+  
+</script>

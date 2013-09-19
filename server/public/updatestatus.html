@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type='text/javascript' src='http://www.google.com/jsapi'></script>
+    <script type='text/javascript'>
+      google.load('visualization', '1', {'packages':['annotatedtimeline']});
+      google.setOnLoadCallback(initChart);
+      
+      var msPerDay = 86400000;
+      function initChart() {
+	
+    	var end = new Date(new Date().getTime()+msPerDay);
+    	var start = new Date(new Date().getTime()-(msPerDay*30));
+    	
+    	getData(start, end, function(resp){
+    		var data = mapData(resp);
+    		
+    		var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
+            chart.draw(data, {displayAnnotations: true});
+            google.visualization.events.addListener(chart, 'rangechange', function(timeline){
+            	console.log(start);
+            	console.log(end);
+            });
+    	});
+
+        
+      }
+      
+      function mapData(data) {
+    	  var table = new google.visualization.DataTable();
+          table.addColumn('date', 'Date');
+          table.addColumn('number', 'Updated');
+          table.addColumn('number', 'Inserted');
+          table.addColumn('number', 'Deleted');
+          table.addColumn('number', 'error');
+
+          var rows = [];
+          for( var i = 0; i < data.length; i++ )  {
+        	  rows.push( [new Date(data[i].timestamp), data[i].update, data[i].insert, data[i].remove, data[i].error ] )
+          }
+          table.addRows(rows);
+          
+          return table;
+      }
+
+      function getData(start, end, callback) {
+    	  $.ajax({
+    		  url : "/rest/stats?start="+getDateStr(start)+"&end="+getDateStr(end),
+    		  success : function(data) {
+    			  callback(data);
+    		  }
+    	  });
+      }
+      
+      function getDateStr(date) {
+    	  var d = date.getDate()+"";
+    	  if( d.length == 1 ) d = "0"+d;
+    	  
+    	  var m = (date.getMonth()+1)+"";
+    	  if( m.length == 1 ) m = "0"+m;
+    	  
+    	  return (date.getYear()+1900)+"-"+m+"-"+d;
+      }
+     
+      
+    </script>
+  </head>
+
+  <body>
+
+    <div id='chart_div' style='width: 800px; height: 400px;'></div>
+
+  </body>
+</html>

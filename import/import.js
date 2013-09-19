@@ -65,7 +65,7 @@ function addItemToMongo(collection, data, index) {
 		if( err ) {
 			log(err);
 		} else {
-			createMapPreview(items.length > 0 ? items[0] : data[index], function(){
+			//createMapPreview(items.length > 0 ? items[0] : data[index], function(){
 				if( items.length > 0 ) { // update
 					data[index]._id = items[0]._id;
 					delete items[0].lastMongoUpdate;
@@ -103,7 +103,7 @@ function addItemToMongo(collection, data, index) {
 					});
 					
 				}
-			});
+			//});
 		}
 	});
 }

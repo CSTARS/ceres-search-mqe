@@ -1,0 +1,11 @@
+{
+  "name": "ceres-search-mqe-previewGenerator",
+  "version": "0.0.1",
+  "author": "Justin Merz <jrmerz@gmail.com>",
+  "description": "Ceres Library Search Cbase Import",
+  "dependencies" : {
+    "canvas"  : "*",
+    "querystring"       : "*",
+    "follow-redirects"  : "*"
+  }
+}

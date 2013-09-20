@@ -141,25 +141,8 @@ ins {
     background-color : transparent !important;
 }
 
-
-.embed a:link {
-    color: #2fa4e7;
-}
-
 #middle_column #anchor ul li {
     list-style-image : none;
     margin-bottom: 5px;
-}
-
-.embed a:visited {
-    color: #2fa4e7;
-}
-
-.embed .btn:link {
-    color: white !important;
-}
-
-.embed .btn:visited {
-    color: white !important;
 }
 

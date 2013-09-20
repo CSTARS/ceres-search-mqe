@@ -175,7 +175,7 @@ CERES.onReady = function() {
 	$("#accordion2").collapse();
 	$("#accordion2").height("auto");
 	
-	CERES.search.init();
+	CERES.search.init(CERES.host);
 	CERES.mqe.init({
 		defaultPage : "search",
 		resultPage : "lp",

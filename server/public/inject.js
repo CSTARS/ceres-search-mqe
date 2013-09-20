@@ -38,7 +38,7 @@ CERES.css = [
 CERES.jquery = "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js";
 CERES.gmaps = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD-qr7GUVuG7hCLVwJkYoQaDZiRLwlGhCM&sensor=true";
 CERES.html = "html/main.html";
-CERES.host = "http://jrmerz.no-ip.org:8892/";
+CERES.host = "http://ceres-search-dev-node.casil.ucdavis.edu/";
 CERES.root = "#anchor";
 
 window.onload = function() {

@@ -179,7 +179,8 @@ CERES.onReady = function() {
 	CERES.mqe.init({
 		defaultPage : "search",
 		resultPage : "lp",
-		resultQueryParameter : "id"
+		resultQueryParameter : "id",
+		hostUrl : CERES.host
 	});
 	CERES.result.init();
 	CERES.map.init();

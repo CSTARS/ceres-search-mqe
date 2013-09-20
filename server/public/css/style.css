@@ -126,28 +126,40 @@ ins {
 /***
  *  State template overrides
  ***/
-#anchor h2 {
-	border: none !important;
+.embed h2 {
+    border: none !important;
+    background-color : transparent !important;
 }
 
-#anchor a:link {
-	color: #2fa4e7;
+.embed h3 {
+    border: none !important;
+    background-color : transparent !important;
+}
+
+.embed h4 {
+    border: none !important;
+    background-color : transparent !important;
+}
+
+
+.embed a:link {
+    color: #2fa4e7;
 }
 
 #middle_column #anchor ul li {
-	list-style-image : none;
-	margin-bottom: 5px;
+    list-style-image : none;
+    margin-bottom: 5px;
 }
 
-#anchor a:visited {
-	color: #2fa4e7;
+.embed a:visited {
+    color: #2fa4e7;
 }
 
-#anchor .btn:link {
-	color: white !important;
+.embed .btn:link {
+    color: white !important;
 }
 
-#anchor .btn:visited {
-	color: white !important;
+.embed .btn:visited {
+    color: white !important;
 }
 

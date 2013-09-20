@@ -148,8 +148,8 @@ CERES.onJqueryLoad = function() {
 	// add script tags
 	var loadCount = 0;
 	for( var i = 0; i < CERES.jslib.length; i++ ) {
-		var scriptUrl = CERES.jslib[i].match(/[http|https].*/) ? CERES.jslib[i] : CERES.host+"/"+CERES.jslib[i];
-		$.getScript(scriptUrl, function(){
+		//var scriptUrl = CERES.jslib[i].match(/^[http|https].*/) ? CERES.jslib[i] : CERES.host+"/"+CERES.jslib[i];
+		$.getScript(CERES.host+"/"+CERES.jslib[i], function(){
 			loadCount++;
 			if( loadCount == CERES.jslib.length ) {
 				CERES.onLibsReady();

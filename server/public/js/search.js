@@ -60,12 +60,15 @@ CERES.search = (function() {
 	var openFilters = [];
 	var allFilterLinks = {};
 	
+	var host = null;
+	
 	function _initAbout() {
 		//$("body").append(aboutPanel);
 	}
 	
 	
-	function init() {
+	function init(chost) {
+	    host = chost;
 		if( CERES.embedOrg ) CERES.mqe.setDefaultFilter({Publisher:CERES.embedOrg});
 		
 		$("#all-filters").modal({show:false});
@@ -104,7 +107,7 @@ CERES.search = (function() {
 		query.page = 0;
 		query.text = $("#search-text").val();
         if( query.text.toLowerCase().replace(/[\s']/g, "") == "ilovethe90s" ) {
-        	window.location = "_90.html";
+        	window.location = (host ? host : '')+"_90.html";
         }
 		window.location = CERES.mqe.queryToUrlString(query);
 	}
@@ -492,7 +495,7 @@ CERES.search = (function() {
 		
 		// on error, try preview widget
 		if( hasPreview ) {
-			var img = $("<img class='img-polaroid' src='images/preview/"+id+".png' style='width:150px;height:150px' />").error(function() {
+			var img = $("<img class='img-polaroid' src='"+(host ? host : '')+"/images/preview/"+id+".png' style='width:150px;height:150px' />").error(function() {
 			    map.html("");
 			    map.esriPreview({
 					url : url,

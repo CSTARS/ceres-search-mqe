@@ -148,7 +148,7 @@ CERES.result = (function() {
 		
 		// on error, try preview widget
 		if( hasPreview ) {
-			var img = $("<img class='img-polaroid' src='images/preview/"+id+".png' style='width:200px;height:200px' />").error(function() {
+			var img = $("<img class='img-polaroid' src='"+(host ? host : '')+"/images/preview/"+id+".png' style='width:200px;height:200px' />").error(function() {
 			    map.html("");
 			    map.esriPreview({
 					url : url,

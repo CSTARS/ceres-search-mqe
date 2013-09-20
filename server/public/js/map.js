@@ -8,8 +8,10 @@ CERES.map = (function() {
 	
 	var markers = [];
 	var previewQueryTimer = -1;
+	var host = null;
 	
-	function init() {
+	function init(chost) {
+	    host = chost;
 		$("#geo-filter").modal({show:false});
 		if( !_addPreviewSearch() ) $("#geo-filter-current-matches-outer").css("visibility","hidden");
 	}
@@ -78,7 +80,7 @@ CERES.map = (function() {
 			});
 			
 			$.ajax({
-				url : '/rest/geoPreview?q='+encodeURIComponent(JSON.stringify(query)),
+				url : (host ? host : '')+'/rest/geoPreview?q='+encodeURIComponent(JSON.stringify(query)),
 				success : function(resp) {
 					
 					for( var key in resp.allPoints ) {

@@ -38,7 +38,7 @@ CERES.css = [
 CERES.jquery = "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js";
 CERES.gmaps = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD-qr7GUVuG7hCLVwJkYoQaDZiRLwlGhCM&sensor=true";
 CERES.html = "html/main.html";
-CERES.host = "http://ceres-search-dev-node.casil.ucdavis.edu/";
+CERES.host = "";
 CERES.root = "#anchor";
 
 window.onload = function() {
@@ -182,8 +182,8 @@ CERES.onReady = function() {
 		resultQueryParameter : "id",
 		hostUrl : CERES.host
 	});
-	CERES.result.init();
-	CERES.map.init();
+	CERES.result.init(CERES.host);
+	CERES.map.init(CERES.host);
 }
 
 // if IE prototype out indexOf

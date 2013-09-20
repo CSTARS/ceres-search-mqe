@@ -75,12 +75,13 @@ exports.bootstrap = function(server) {
 	server.app.get('/embed', function(req, res) {
 		var org = req.query.org;
 		var anchor = req.query.anchor;
-		
+		var root = req.query.root;
 		
 		fs.readFile(__dirname+'/public/inject.js','utf-8', function(err, data){
 			if( err ) return res.send({error:true, message:err});
 			
-			data += "\nCERES.host='"+req.protocol+"://"+req.host+"/';";
+			if( root ) data += "\nCERES.host='"+root+"';"
+			else data += "\nCERES.host='"+req.protocol+"://"+req.host+"';";
 			if( org ) data += "\nCERES.embedOrg='"+org+"';";
 			if( anchor ) data += "\nCERES.root='#"+anchor+"';";
 			res.send(data);

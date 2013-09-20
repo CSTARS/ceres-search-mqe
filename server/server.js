@@ -107,10 +107,13 @@ exports.bootstrap = function(server) {
 		var limit = 1000;
 		
 		var query = req.query.q;
+		var defaultQuery = req.query.dq;
 		if( !query ) return res.send({error:true,message:"No query provided"});
+		if( !defaultQuery ) return res.send({error:true,message:"No default query provided"});
 		
 		try {
 			query = JSON.parse(query);
+			defaultQuery = JSON.parse(defaultQuery);
 		} catch (e) {
 			return res.send({error:true,message:e});
 		}
@@ -139,6 +142,7 @@ exports.bootstrap = function(server) {
 			}
 			
 			if( query.filters.length > 0 )  command.filter["$and"] = query.filters;
+			if( defaultQuery.filters.length > 0 )  justGeoOptions.filter["$and"] = defaultQuery.filters;
 		}
 		
 		if( query.text.length == 0 ) {

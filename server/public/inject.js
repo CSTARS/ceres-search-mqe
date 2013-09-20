@@ -78,6 +78,10 @@ window.onload = function() {
 }
 
 CERES.onJqueryLoad = function() {
+    $(window).load(function(){
+        if( window.navigator.userAgent.match(/.*MSIE\s[67].*/) ) $("#no-support").show();
+    });
+    
 	// IE cross-site for jquery
 	// add ajax transport method for cross domain requests when using IE9
 	if('XDomainRequest' in window && window.XDomainRequest !== null) {

@@ -179,11 +179,13 @@ CERES.onReady = function() {
 	$("#accordion2").collapse();
 	$("#accordion2").height("auto");
 	
-	CERES.chartsPackageReady = false;
-    google.load('visualization', '1.0', {'packages':['corechart']});
-    google.setOnLoadCallback(function(){
-        CERES.chartsPackageReady = true;
-    });
+	try {
+        CERES.chartsPackageReady = false;
+        google.load('visualization', '1.0', {'packages':['corechart']});
+        google.setOnLoadCallback(function(){
+            CERES.chartsPackageReady = true;
+        });
+    } catch (e) {}
 	
 	CERES.search.init(CERES.host);
 	CERES.mqe.init({

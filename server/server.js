@@ -142,7 +142,10 @@ exports.bootstrap = function(server) {
 			}
 			
 			if( query.filters.length > 0 )  command.filter["$and"] = query.filters;
-			if( defaultQuery.filters.length > 0 )  justGeoOptions.filter["$and"] = defaultQuery.filters;
+			if( defaultQuery.filters.length > 0 )  {
+			    justGeoOptions.filter = {};
+			    justGeoOptions.filter["$and"] = defaultQuery.filters;
+			}
 		}
 		
 		if( query.text.length == 0 ) {

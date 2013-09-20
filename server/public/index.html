@@ -33,15 +33,17 @@
 	<script type="text/javascript" src="js/map.js"></script>
 	
 	<script type="text/javascript">
-	
-		CERES.chartsPackageReady = false;
-		google.load('visualization', '1.0', {'packages':['corechart']});
-		google.setOnLoadCallback(function(){
-			CERES.chartsPackageReady = true;
-		});
+		
 		
 		
 		$(window).ready(function(){
+		    try {
+	            CERES.chartsPackageReady = false;
+	            google.load('visualization', '1.0', {'packages':['corechart']});
+	            google.setOnLoadCallback(function(){
+	                CERES.chartsPackageReady = true;
+	            });
+	        } catch (e) {}
 			
 			$("#accordion2").collapse();
 			$("#accordion2").height("auto");

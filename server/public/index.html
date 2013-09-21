@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	
 	<title>Search</title>
@@ -12,18 +13,17 @@
 	<link href="css/animate.css" rel="stylesheet" />
 	<link href="css/style.css" rel="stylesheet">
 	
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="jslib/bootstrap.min.js"></script>
 	<script type="text/javascript" src="jslib/handlebars.js"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-qr7GUVuG7hCLVwJkYoQaDZiRLwlGhCM&sensor=true"></script>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    
 	
 	<script type="text/javascript">
 		var CERES = {};
 		$(window).load(function(){
 			if( window.navigator.userAgent.match(/.*MSIE\s[67].*/) ) $("#no-support").show();
 		});
-		
 	</script>
 	<script type="text/javascript" src="mqe/mqe.js"></script>
 	<script type="text/javascript" src="js/jquery.esriPreview.js"></script>
@@ -33,17 +33,17 @@
 	<script type="text/javascript" src="js/map.js"></script>
 	
 	<script type="text/javascript">
-		
+		try {
+	        CERES.chartsPackageReady = false;
+	        google.load('visualization', '1.0', {'packages':['corechart']});
+	        google.setOnLoadCallback(function(){
+	            CERES.chartsPackageReady = true;
+	        });
+	    } catch(e) {}
 		
 		
 		$(window).ready(function(){
-		    try {
-	            CERES.chartsPackageReady = false;
-	            google.load('visualization', '1.0', {'packages':['corechart']});
-	            google.setOnLoadCallback(function(){
-	                CERES.chartsPackageReady = true;
-	            });
-	        } catch (e) {}
+
 			
 			$("#accordion2").collapse();
 			$("#accordion2").height("auto");

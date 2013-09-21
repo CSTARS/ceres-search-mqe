@@ -67,6 +67,7 @@ CERES.map = (function() {
 			for( var i = 0; i < query.filters.length; i++ ) {
 				if( query.filters[i].Centroid ) {
 					query.filters.splice(i, 1);
+					break;
 				}
 			}
 			
@@ -79,8 +80,8 @@ CERES.map = (function() {
 			});
 			
 			$.ajax({
-				url : (host ? host : '')+'/rest/geoPreview?q='+encodeURIComponent(JSON.stringify(query)) + 
-				        "&dq="+encodeURIComponent(JSON.stringify(CERES.mqe.getDefaultQuery())),
+				url : (host ? host : '')+'/rest/geoPreview?q='+encodeURIComponent(JSON.stringify(query)) 
+				        +"&dq="+encodeURIComponent(JSON.stringify(CERES.mqe.getDefaultQuery())),
 				success : function(resp) {
 					
 					for( var key in resp.allPoints ) {

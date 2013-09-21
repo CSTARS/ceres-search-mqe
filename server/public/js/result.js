@@ -50,7 +50,7 @@ CERES.result = (function() {
 	var cResult = null;
 	
 	function init(host) {
-		$.get(host ? host+'/result.handlebars' : '/result.handlebars', function(template){
+		$.get(host ? host+'/handlebars_result.html' : '/handlebars_result.html', function(template){
 			resultTemplate = Handlebars.compile($(template).html());
 			
 			loaded = true;

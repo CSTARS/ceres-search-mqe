@@ -41,6 +41,14 @@ CERES.html = "html/main.html";
 CERES.host = "";
 CERES.root = "#anchor";
 
+try {
+CERES.chartsPackageReady = false;
+google.load('visualization', '1.0', {'packages':['corechart']});
+google.setOnLoadCallback(function(){
+    CERES.chartsPackageReady = true;
+});
+} catch (e) {}
+
 window.onload = function() {
 	// add jquery
 	var head = document.getElementsByTagName("head")[0];
@@ -131,14 +139,6 @@ CERES.onJqueryLoad = function() {
 	        };
 	    });
 	}
-	
-   try {
-        CERES.chartsPackageReady = false;
-        google.load('visualization', '1.0', {'packages':['corechart']});
-        google.setOnLoadCallback(function(){
-            CERES.chartsPackageReady = true;
-        });
-    } catch (e) {}
 	
 	var head = $('head');
 	

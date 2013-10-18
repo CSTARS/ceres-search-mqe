@@ -31,7 +31,7 @@ CERES.app = (function() {
 		if( window.gas ) {
 		    var cSearch = CERES.mqe.getCurrentQuery();
 		    if( cSearch.text != cText ) {
-		        ga('send', 'event', 'navigation', 'text_query', { text: CERES.mqe.getCurrentQuery().text});
+		        gas('send', 'event', 'navigation', 'text_query', { text: CERES.mqe.getCurrentQuery().text});
 		        cText = cSearch.text;
 		    }
 		    gas('send', 'pageview', window.location.pathname+window.location.hash);

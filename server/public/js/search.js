@@ -107,7 +107,7 @@ CERES.search = (function() {
 		query.page = 0;
 		query.text = $("#search-text").val();
         if( query.text.toLowerCase().replace(/[\s']/g, "") == "ilovethe90s" ) {
-        	window.location = (host ? 'http://'+host : '')+"/_90.html";
+        	window.location = (host ? host : '')+"/_90.html";
         }
 		window.location = CERES.mqe.queryToUrlString(query);
 	}

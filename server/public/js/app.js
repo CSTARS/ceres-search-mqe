@@ -16,6 +16,7 @@ CERES.app = (function() {
 	var validPages = [DEFAULT_PAGE, "lp"];
 	
 	var cPage = "";
+	var cText = null;
 	
 	$(window).ready(function(){
 		// mqe.js handles the hash parsing and fires this event
@@ -27,7 +28,14 @@ CERES.app = (function() {
 	
 	function _updatePage(page) {
 		// track all hash updates
-		if( window.ga ) ga('send', 'pageview', window.location.pathname+window.location.hash);
+		if( window.gas ) {
+		    var cSearch = CERES.mqe.getCurrentQuery();
+		    if( cSearch.text != cText ) {
+		        ga('send', 'event', 'navigation', 'text_query', { text: CERES.mqe.getCurrentQuery().text});
+		        cText = cSearch.text;
+		    }
+		    gas('send', 'pageview', window.location.pathname+window.location.hash);
+		}
 		
 		if( page == cPage ) return;
 		

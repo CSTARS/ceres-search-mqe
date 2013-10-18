@@ -21,18 +21,17 @@ CERES.app = (function() {
 	$(window).ready(function(){
 		// mqe.js handles the hash parsing and fires this event
 		$(window).bind("page-update-event", function(e, hash){
-			_updatePage(hash[0]);
+			_updatePage(hash[0], hash);
 			_updatePageContent(hash);
 		});
 	});
 	
-	function _updatePage(page) {
+	function _updatePage(page, hash) {
 		// track all hash updates
 		if( window.gas ) {
-		    var cSearch = CERES.mqe.getCurrentQuery();
-		    if( cSearch.text != cText ) {
-		        gas('send', 'event', 'navigation', 'text_query', { text: CERES.mqe.getCurrentQuery().text});
-		        cText = cSearch.text;
+		    if( hash.length > 0 && cSearch.text != hash[1] ) {
+		        gas('send', 'event', 'navigation', 'text_query', { text: hash[1]});
+		        cText = hash[1];
 		    }
 		    gas('send', 'pageview', window.location.pathname+window.location.hash);
 		}

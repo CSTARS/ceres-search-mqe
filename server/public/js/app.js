@@ -29,8 +29,8 @@ CERES.app = (function() {
 	function _updatePage(page, hash) {
 		// track all hash updates
 		if( window.gas ) {
-		    if( hash.length > 0 && cText != hash[1] ) {
-		        gas('send', 'event', 'navigation', 'search', 'text_query', hash[1]);
+		    if( hash.length > 0 && cText != hash[1] && hash[0] == "search" ) {
+		        gas('send', 'event', 'search', 'text_query', hash[1], 1);
 		        cText = hash[1];
 		    }
 		    gas('send', 'pageview', window.location.pathname+window.location.hash);

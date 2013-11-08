@@ -1,10 +1,9 @@
 CERES.map = (function() {
-	
 	var map;
 	var centerMarker;
 	var circle;
 	var r = 16093; // default to 10 miles
-	var ll = new google.maps.LatLng(38.535, -121.462);
+	var ll = null;
 	
 	var markers = [];
 	var previewQueryTimer = -1;
@@ -12,6 +11,7 @@ CERES.map = (function() {
 	
 	function init(chost) {
 	    host = chost;
+	    ll = new google.maps.LatLng(38.535, -121.462);
 		$("#geo-filter").modal({show:false});
 		if( !_addPreviewSearch() ) $("#geo-filter-current-matches-outer").css("visibility","hidden");
 	}

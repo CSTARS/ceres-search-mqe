@@ -37,7 +37,6 @@ Handlebars.registerHelper('description', function() {
 	  return new Handlebars.SafeString(this.description);
 });
 
-
 CERES.result = (function() {
 	
 	var resultTemplate = null;
@@ -48,8 +47,10 @@ CERES.result = (function() {
 	var loadHandlers = [];
 	var chart = null;
 	var cResult = null;
-	
-	function init(host) {
+	var host = null;
+
+	function init(h) {
+		host = h;
 		$.get(host ? host+'/handlebars_result.html' : '/handlebars_result.html', function(template){
 			resultTemplate = Handlebars.compile($(template).html());
 			
@@ -136,6 +137,11 @@ CERES.result = (function() {
 		$(".result-back-btn").on('click', function(){
 			$(window).trigger("back-to-search-event");
 		});
+
+		// let outside resource know we are ready
+		// using for static resourceing at the moment
+		if( CERES.mqe.lpready ) CERES.mqe.lpready();
+		CERES.mqe._lploaded = true;
 	}
 	
 	function _addMapPreview(id, url, hasPreview) {

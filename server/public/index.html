@@ -21,10 +21,12 @@
 	
 	<script type="text/javascript">
 		var CERES = {};
+		
 		$(window).load(function(){
 			if( window.navigator.userAgent.match(/.*MSIE\s[67].*/) ) $("#no-support").show();
 		});
 	</script>
+
 	<script type="text/javascript" src="mqe/mqe.js"></script>
 	<script type="text/javascript" src="js/jquery.esriPreview.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
@@ -43,11 +45,8 @@
 		
 		
 		$(window).ready(function(){
-
-			
 			$("#accordion2").collapse();
 			$("#accordion2").height("auto");
-			
 			CERES.mqe.init({
 				defaultPage : "search",
 				resultPage : "lp",
@@ -102,13 +101,6 @@
 						</div>
 					</div>
 			</div>
-			
-			<!-- <div style="position:relative;z-index:1000">
-				<div id="all-filters-outer">
-					<div id="all-filters"></div>
-				</div>
-			</div> -->
-			
 			
 			<div id="results-panel"></div>
 			

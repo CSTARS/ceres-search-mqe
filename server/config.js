@@ -76,6 +76,7 @@ exports.db = {
 //}
 
 exports.server = {
+
 	// local config
 	host : "localhost",
 	

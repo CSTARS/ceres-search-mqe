@@ -175,6 +175,8 @@ CERES.result = (function() {
 	}
 	
 	function _createUptimeChart(dates, status) {
+		if( !google.visualization ) return;
+
 		// allow things to settle for width	
 		var dt = new google.visualization.DataTable();
 		

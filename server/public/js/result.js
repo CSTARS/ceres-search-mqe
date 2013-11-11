@@ -178,8 +178,14 @@ CERES.result = (function() {
 		if( !google.visualization ) return;
 
 		// allow things to settle for width	
-		var dt = new google.visualization.DataTable();
-		
+		// try / catch is for zombie.js
+		var dt;
+		try {
+		 	dt = new google.visualization.DataTable();
+		} catch (e) {
+			return;
+		}
+
 		dt.addColumn('string', 'Date');
 		dt.addColumn('number', 'Status');
 		for( var i = 0; i < dates.length; i++ ) {

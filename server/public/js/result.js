@@ -1,36 +1,45 @@
-Handlebars.registerHelper('result-list', function(items, options, foo, bar) {
-  var out = "";
-  if( !items ) return out;
+Handlebars.registerHelper('result-list', function(items, options) {
+    var out = "";
+    if( !items ) return out;
 	  
-  var key = options.fn({});
-  items.sort();
+    var key = options.fn({});
+    items.sort();
+
+    // TODO: all of these require complex schema types
+    //var schema = '';
+    //if( CERES.result.schemaMap[key] ) schema = 'itemprop="'+CERES.result.schemaMap[key]+'"';
   
-  var unique = [];
-  $.each(items, function(i, el){
-      if($.inArray(el, unique) === -1) unique.push(el);
-  });
+    var unique = [];
+    $.each(items, function(i, el){
+        if($.inArray(el, unique) === -1) unique.push(el);
+    });
   
-  for(var i=0, l=unique.length; i<l; i++) {
-	var q = CERES.mqe.getDefaultQuery();
+    for(var i=0, l=unique.length; i<l; i++) {
+	   var q = CERES.mqe.getDefaultQuery();
 	
-	var f = {};
-	f[key] = unique[i];
-	q.filters.push(f);
-    out = out + "<li><a href='"+CERES.mqe.queryToUrlString(q)+"'><i class='icon-filter' style='color:#888'></i> "+unique[i]+"</a></li>";
-  }
-  return out;
+        var f = {};
+        f[key] = unique[i];
+        q.filters.push(f);
+        out = out + '<li><a href="'+CERES.mqe.queryToUrlString(q)+'" ><i class="icon-filter" style="color:#888"></i> '+unique[i]+'</a></li>';
+    }
+    return out;
 });
 
-Handlebars.registerHelper('result-list-plain', function(items, options, foo, bar) {
-	  var out = "";
-	  if( !items ) return out;
+Handlebars.registerHelper('result-list-plain', function(items, options) {
+	var out = "";
+	if( !items ) return out;
 
-	  items.sort();
-	  for(var i=0, l=items.length; i<l; i++) {
-	    out += items[i];
+    var key = options.fn({});
+
+    var schema = '';
+    if( CERES.result.schemaMap[key] ) schema = 'itemprop="'+CERES.result.schemaMap[key]+'"';
+
+	items.sort();
+	for(var i=0, l=items.length; i<l; i++) {
+	    out += '<span '+schema+'>'+items[i]+'</span>';
 	    if( i < items.length - 1 ) out += ", ";
-	  }
-	  return out;
+	}
+	return out;
 });
 
 Handlebars.registerHelper('description', function() {
@@ -48,6 +57,11 @@ CERES.result = (function() {
 	var chart = null;
 	var cResult = null;
 	var host = null;
+
+	// mapping our results attributes to the correct schema.org attribute
+	var schemaMap = {
+        "Keyword" : "keywords"
+	}
 
 	function init(h) {
 		host = h;
@@ -229,17 +243,15 @@ CERES.result = (function() {
 	
 	
 	function getResultHtml(result) {
-		
 		return resultTemplate(result);
-		
 	}
-
 	
 	return {
 		init : init,
 		updateResult : updateResult,
 		getResultHtml : getResultHtml,
-		onLoad : onLoad
+		onLoad : onLoad,
+		schemaMap : schemaMap
 	}
 	
 })();

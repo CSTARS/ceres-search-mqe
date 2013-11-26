@@ -438,14 +438,14 @@ CERES.search = (function() {
 		if( linkArray.length == 1 ) {
 			if( linkArray[0] == "" ) return "";
 			
-			return "<a class='btn'  style='margin:2px' href='"+linkArray[0]+"' target='_blank' >" + 
+			return "<a class='btn'  style='margin:2px' href='"+linkArray[0]+"' itemprop='url' target='_blank' >" + 
 					_getResourceIcon(resource)+resource+": "+_getResourceButtonLabel(resource, linkArray[0], true)+"</a> ";
 		}
 		
 		var btn = '<div class="btn-group"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> '+
 				_getResourceIcon(resource)+resource+' <span class="caret"></span></a><ul class="dropdown-menu" style="z-index:2000">';
 		for( var i = 0; i < linkArray.length; i++ ) {
-			btn += '<li><a href="'+linkArray[i]+'" target="_blank">'+_getResourceButtonLabel(resource, linkArray[i], false)+'</a></li>';
+			btn += '<li><a href="'+linkArray[i]+'" target="_blank" itemprop="url">'+_getResourceButtonLabel(resource, linkArray[i], false)+'</a></li>';
 		}
 		btn += '</ul></div>';
 		

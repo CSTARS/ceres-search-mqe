@@ -48,12 +48,17 @@ exports.db = {
 	// attributes that are stored but will never be returned to a default search/get request
 	blacklist       : ["lastMongoUpdate"],
 	
-	// local script to be fired when update is called via admin api call
-	importScript    : "/Users/jrmerz/dev/ceres/ceres-search-mqe/import/import.js",
-	
 	// should updates be allowed to fire
 	allowUpdates    : true
 		
+}
+
+exports.import = {
+	// local script to be fired when update is called via admin api call
+	module    : "/Users/jrmerz/dev/ceres/ceres-search-mqe/import/import.js",
+
+	hour   : "*",
+	minute : 55,
 }
 
 //auth server information

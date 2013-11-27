@@ -9,7 +9,6 @@
 var config = require(process.argv[2]);
 var fs = require("fs");
 var ObjectId = require('mongodb').ObjectID;
-var importer = require('../import/import.js');
 var nodemailer;
 
 if( config.email ) {
@@ -20,12 +19,6 @@ if( config.email ) {
 	        port : config.email.port
 	});
 }
-
-// wait 5 seconds then startup the import
-setTimeout(function(){
-	importer.run(config);
-},5000);
-
 
 // include auth model
 var auth;

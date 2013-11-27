@@ -14,15 +14,6 @@ var mapServiceTypes = ["MapServer","ImageServer","GeocodeServer","FeatureServer"
      					"GeoDataServer","MobileServer","IndexGenerator","IndexingLauncher","SearchServer",
      					"NAServer","GPServer","GlobeServer","Map Service"];
 
-exports.run = function(conf) {
-	config = conf;
-	runImport();
-	
-	setInterval(function(){
-		runImport();
-	}, 1000*60*60);
-}
-
 function runImport() {
 	lastRun = new Date();
 	count = {
@@ -73,8 +64,8 @@ function addItemToMongo(collection, data, index) {
 					// copy icon attributes
 					if( items[0].hasPreview != null ) data[index].hasPreview = items[0].hasPreview;
 					if( items[0].lastPreviewGeneration != null ) data[index].lastPreviewGeneration = items[0].lastPreviewGeneration;
-					
-					if( JSON.stringify(items[0]) != JSON.stringify(data[index]) ) {
+
+					if( _checkDiff(items[0], data[index]) ) {
 						count.update++; // something changed
 					}
 						
@@ -106,6 +97,26 @@ function addItemToMongo(collection, data, index) {
 			//});
 		}
 	});
+}
+
+function _checkDiff(item1, item2) {
+	var key, tmp1, tmp2;
+	var ignoreList = ["Date Entered","score","Uptime Date","Uptime Status"];
+	for( key in item1 ) {
+		if( ignoreList.indexOf(key) > -1 ) continue;
+
+		if( !item2[key] ) return true;
+
+		tmp1 = (typeof item1[key] == 'object') ? JSON.stringify(item1[key]) : item1[key];
+		tmp2 = (typeof item2[key] == 'object') ? JSON.stringify(item2[key]) : item2[key];
+		if( tmp1 != tmp2 ) return true;
+	}
+	for( key in item2 ) {
+		if( ignoreList.indexOf(key) > -1 ) continue;
+		if( !item1[key] ) return true;
+	}
+
+	return false;
 }
 
 function createMapPreview(item, callback) {
@@ -241,3 +252,13 @@ function clearCache(callback) {
 	    });
 	});
 }
+
+// the config file should be the second argument
+if( process.argv.length < 3 ) {
+    console.log("you must provide the location of your config file");
+    process.exit();
+}
+
+config = require(process.argv[2]);
+
+runImport();

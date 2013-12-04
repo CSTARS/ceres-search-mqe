@@ -55,8 +55,6 @@ exports.getData = function(callback) {
 	    callback(null, arr);
 	  });
 	});
-
-
 }
 
 function createMqeItem(data, score) {

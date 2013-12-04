@@ -70,7 +70,7 @@ function addItemToMongo(collection, data, index) {
 					}
 						
 					data[index].lastMongoUpdate = lastRun.toLocaleString();
-					collection.update({_id:items[0]._id}, data[index], function(err, result) {
+					collection.update({_id: items[0]._id}, data[index], function(err, result) {
 						if( err ) {
 							count.error++;
 							log(err);
@@ -105,15 +105,17 @@ function _checkDiff(item1, item2) {
 	for( key in item1 ) {
 		if( ignoreList.indexOf(key) > -1 ) continue;
 
-		if( !item2[key] ) return true;
+		if( item2[key] == null ) return true;
 
 		tmp1 = (typeof item1[key] == 'object') ? JSON.stringify(item1[key]) : item1[key];
 		tmp2 = (typeof item2[key] == 'object') ? JSON.stringify(item2[key]) : item2[key];
-		if( tmp1 != tmp2 ) return true;
+		if( tmp1 != tmp2 ) {
+			return true;
+		}
 	}
 	for( key in item2 ) {
 		if( ignoreList.indexOf(key) > -1 ) continue;
-		if( !item1[key] ) return true;
+		if( item1[key] == null ) return true;
 	}
 
 	return false;

@@ -417,6 +417,19 @@ CERES.search = (function() {
 				$("#descriptionRow-"+item.id).removeClass("span8").addClass("span12");
 			}
 		}
+
+		_updateSeo();
+	}
+
+	function _updateSeo() {
+		$("title").text("CERES - Search Results");
+
+		var desc = $('meta[name="description"]');
+		if( desc.length == 0 ) {
+			desc = $('<meta name="description" />');
+			$("head").append(desc);
+		}
+		desc.attr("content","CERES search results");
 	}
 	
 	function createResourceButtons(item) {

@@ -162,10 +162,24 @@ CERES.result = (function() {
 			$(window).trigger("back-to-search-event");
 		});
 
+		// update title and desciption for search engine optimization
+		_updateSeo()
+
 		// let outside resource know we are ready
 		// using for static resourceing at the moment
 		if( CERES.mqe.lpready ) CERES.mqe.lpready();
 		CERES.mqe._lploaded = true;
+	}
+
+	function _updateSeo() {
+		$("title").text("CERES - "+cResult.title);
+
+		var desc = $('meta[name="description"]');
+		if( desc.length == 0 ) {
+			desc = $('<meta name="description" />');
+			$("head").append(desc);
+		}
+		desc.attr("content",cResult.description);
 	}
 	
 	function _addMapPreview(id, url, hasPreview) {

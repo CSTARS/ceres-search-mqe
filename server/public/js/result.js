@@ -14,23 +14,23 @@ Handlebars.registerHelper('result-list', function(items, options) {
         if($.inArray(el, unique) === -1) unique.push(el);
     });
   
-    var schema = '';
+    var schema = '<span><span>';
     if( key == 'Contributor' ) {
-    	schema = 'itemprop="contributor" itemscope itemtype="http://schema.org/Organization"';
+    	schema = '<span itemprop="contributor" itemscope itemtype="http://schema.org/Organization"><span itemprop="name">';
     } else if ( key == 'Publisher' ) {
-    	schema = 'itemprop="publisher" itemscope itemtype="http://schema.org/Organization"';
+    	schema = '<span itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><span itemprop="name">';
     } else if ( key == 'Topic' ) {
-    	schema = 'itemprop="keyword"'
+    	schema = '<span><span itemprop="keywords">';
     }
-
+    
     for(var i=0, l=unique.length; i<l; i++) {
 	   var q = CERES.mqe.getDefaultQuery();
-	
+
         var f = {};
         f[key] = unique[i];
         q.filters.push(f);
         out = out + '<li><a href="'+CERES.mqe.queryToUrlString(q)+'" ><i class="icon-filter" style="color:#888"></i> ' +
-        			'<span '+schema+'>'+unique[i]+'</span></a></li>';
+        			schema+unique[i]+'</span></span></a></li>';
     }
     return out;
 });

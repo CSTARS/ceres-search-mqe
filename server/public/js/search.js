@@ -438,16 +438,19 @@ CERES.search = (function() {
 		if( linkArray.length == 1 ) {
 			if( linkArray[0] == "" ) return "";
 			
-			return "<a class='btn'  style='margin:2px' href='"+linkArray[0]+"' itemprop='url' target='_blank' >" + 
-					_getResourceIcon(resource)+resource+": "+_getResourceButtonLabel(resource, linkArray[0], true)+"</a> ";
+			var schema = '<span>';
+			if( resource == "Download" ) schema = '<span itemprop="distribution" itemscope itemtype="http://schema.org/DataDownload">';
+
+			return schema+"<a class='btn'  style='margin:2px' href='"+linkArray[0]+"' itemprop='url' target='_blank' >" + 
+					_getResourceIcon(resource)+resource+": "+_getResourceButtonLabel(resource, linkArray[0], true)+"</a></span>";
 		}
 		
 		var btn = '<div class="btn-group"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> '+
 				_getResourceIcon(resource)+resource+' <span class="caret"></span></a><ul class="dropdown-menu" style="z-index:2000">';
 		for( var i = 0; i < linkArray.length; i++ ) {
-			var schema = 'itemprop="url"';
+			var schema = '';
 			if( resource == "Download" ) schema = 'itemprop="distribution" itemscope itemtype="http://schema.org/DataDownload"';
-			btn += '<li><a href="'+linkArray[i]+'" target="_blank" '+schema+'>'+_getResourceButtonLabel(resource, linkArray[i], false)+'</a></li>';
+			btn += '<li '+schema+'><a href="'+linkArray[i]+'" target="_blank" itemprop="url">'+_getResourceButtonLabel(resource, linkArray[i], false)+'</a></li>';
 		}
 		btn += '</ul></div>';
 		

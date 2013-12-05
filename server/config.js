@@ -58,7 +58,7 @@ exports.import = {
 	module    : "/Users/jrmerz/dev/ceres/ceres-search-mqe/import/import.js",
 
 	hour   : "*",
-	minute : 55,
+	minute : 10,
 }
 
 //auth server information

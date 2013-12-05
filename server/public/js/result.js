@@ -14,13 +14,23 @@ Handlebars.registerHelper('result-list', function(items, options) {
         if($.inArray(el, unique) === -1) unique.push(el);
     });
   
+    var schema = '';
+    if( key == 'Contributor' ) {
+    	schema = 'itemprop="contributor" itemscope itemtype="http://schema.org/Organization"';
+    } else if ( key == 'Publisher' ) {
+    	schema = 'itemprop="publisher" itemscope itemtype="http://schema.org/Organization"';
+    } else if ( key == 'Topic' ) {
+    	schema = 'itemprop="keyword"'
+    }
+
     for(var i=0, l=unique.length; i<l; i++) {
 	   var q = CERES.mqe.getDefaultQuery();
 	
         var f = {};
         f[key] = unique[i];
         q.filters.push(f);
-        out = out + '<li><a href="'+CERES.mqe.queryToUrlString(q)+'" ><i class="icon-filter" style="color:#888"></i> '+unique[i]+'</a></li>';
+        out = out + '<li><a href="'+CERES.mqe.queryToUrlString(q)+'" ><i class="icon-filter" style="color:#888"></i> ' +
+        			'<span '+schema+'>'+unique[i]+'</span></a></li>';
     }
     return out;
 });

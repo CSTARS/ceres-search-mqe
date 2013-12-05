@@ -445,7 +445,9 @@ CERES.search = (function() {
 		var btn = '<div class="btn-group"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> '+
 				_getResourceIcon(resource)+resource+' <span class="caret"></span></a><ul class="dropdown-menu" style="z-index:2000">';
 		for( var i = 0; i < linkArray.length; i++ ) {
-			btn += '<li><a href="'+linkArray[i]+'" target="_blank" itemprop="url">'+_getResourceButtonLabel(resource, linkArray[i], false)+'</a></li>';
+			var schema = 'itemprop="url"';
+			if( resource == "Download" ) schema = 'itemprop="distribution" itemscope itemtype="http://schema.org/DataDownload"';
+			btn += '<li><a href="'+linkArray[i]+'" target="_blank" '+schema+'>'+_getResourceButtonLabel(resource, linkArray[i], false)+'</a></li>';
 		}
 		btn += '</ul></div>';
 		

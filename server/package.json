@@ -12,6 +12,7 @@
     "passport-facebook" : "*",
     "passport-twitter"  : "*",
     "excel-export"      : "*",
-    "nodemailer"       : "*"
+    "nodemailer"        : "*",
+    "node-ckan"         : "*"
   }
 }

@@ -52,12 +52,15 @@ exports.bootstrap = function(server) {
 
 		cacheCollection = coll;
 	});
-	
-	db.collection("items_update_stats", function(err, coll) { 
-		if( err ) return console.log(err);
 
-		statsCollection = coll;
-	});
+	if( config.import.statsCollection ) {
+		db.collection(config.import.statsCollection, function(err, coll) { 
+			if( err ) return console.log(err);
+
+			statsCollection = coll;
+		});
+	}
+	
 	
 	// make sure their is a an index one the id attribute.  It's used in import
 	collection.ensureIndex( {id: 1}, function(err) {
@@ -81,13 +84,12 @@ exports.bootstrap = function(server) {
 		});
 	});
 	
+	
 	server.app.get('/rest/stats', function(req, res){
+		if( config.import.statsCollection ) return res.send([]);
+
 		var start = new Date(req.query.start + "T00:00:00.000Z");
 		var end = new Date(req.query.end + "T00:00:00.000Z");
-		
-		console.log(start.toDateString());
-		console.log(end.toDateString());
-		
 		
 		var q = {"timestamp": {$gte:start, $lt: end }};
 		statsCollection.find(q).toArray(function(err, items) {
@@ -95,6 +97,7 @@ exports.bootstrap = function(server) {
 			res.send(items);
 		});
 	});
+
 	
 	server.app.get('/rest/geoPreview', function(req, res) {
 		var limit = 1000;

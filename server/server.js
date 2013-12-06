@@ -86,7 +86,7 @@ exports.bootstrap = function(server) {
 	
 	
 	server.app.get('/rest/stats', function(req, res){
-		if( config.import.statsCollection ) return res.send([]);
+		if( !config.import.statsCollection ) return res.send([]);
 
 		var start = new Date(req.query.start + "T00:00:00.000Z");
 		var end = new Date(req.query.end + "T00:00:00.000Z");

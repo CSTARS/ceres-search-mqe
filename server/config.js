@@ -1,9 +1,8 @@
-var tokenConfig = require("/etc/mqe/tokens.js");
 exports.debug = true;
 
 exports.db = {
 	// connection string for the database, includes database name
-	url             : "mongodb://localhost:27017/ceresSearch",
+	url             : "mongodb://localhost:27017/ceresSearchCkan",
 	
 	// collection where the queryable items are stored
 	mainCollection  : "items",
@@ -17,7 +16,7 @@ exports.db = {
 	
 	// Filters your site uses, these will be returned in the results
 	// MQE will also use this list to make sure indexes are built on these items
-	indexedFilters  : ["filter_resources", "Publisher", "Topic"],
+	indexedFilters  : ["filter_resources", "Publisher", "Topic", "mimetypes", "organization"],
 	
 	/// filter used for geographic queries
 	geoFilter : "Centroid",
@@ -50,35 +49,19 @@ exports.db = {
 	
 	// should updates be allowed to fire
 	allowUpdates    : true
-		
 }
 
 exports.import = {
 	// local script to be fired when update is called via admin api call
-	module    : "/Users/jrmerz/dev/ceres/ceres-search-mqe/import/import.js",
+	module    : "/Users/jrmerz/dev/cstars/ckan-mqe-importer/ckan-importer.js",
+
+	itemProcessor : '/Users/jrmerz/dev/ceres/ceres-search-mqe-ckan/import/itemProcessor.js',
+
+	statsCollection : 'items_import_stats',
 
 	hour   : "*",
-	minute : 55,
+	minute : 10,
 }
-
-//auth server information
-//exports.auth = {
-//		script            : "/Users/jrmerz/dev/ceres/ceres-auth-node/auth",
-//		token             : tokenConfig.token,
-//		centralAuthServer : "http://localhost:4000",
-//		appName           : "CCCDev",
-//		twitter           : tokenConfig.twitter,
-//		facebook          : tokenConfig.facebook,
-		
-		// these pages will require login and admin role
-//		adminPages        : ["admin.html"],
-		
-		// page to redirect to after login
-//		loginRedirectPage : "admin.html",
-		
-		// do accounts require approval?
-//		requireApproval   : false
-//}
 
 exports.server = {
 
@@ -98,16 +81,8 @@ exports.server = {
 	script : "/Users/jrmerz/dev/ceres/ceres-search-mqe/server/server.js"
 }
 
-//exports.email = {
-//	host      : "mx4.ceres.ca.gov",
-//	port      : 25,
-//	from      : "do-not-reply@ceres.ca.gov",
-//	to        : ["jrmerz@gmail.com"]
-//}
+exports.ckan = {
+	groupByPackage : true,
 
-exports.schema = {
-}
-
-// dform options
-exports.editForm = {
+	server : 'http://ceic.casil.ucdavis.edu'
 }

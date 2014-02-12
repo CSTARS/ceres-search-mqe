@@ -3,7 +3,7 @@
  *  ssh -f -N -L 65432:localhost:5432 username@cbase.casil.ucdavis.edu
  * */
 var pg = require('pg');
-var Proj4js = require('proj4js'),
+var Proj4js = require('proj4'),
        proj = new Proj4js.Proj("EPSG:3857");
 var config; 
 

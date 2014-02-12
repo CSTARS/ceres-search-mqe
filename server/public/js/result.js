@@ -73,6 +73,13 @@ CERES.result = (function() {
         "Keyword" : "keywords"
 	}
 
+	var ERROR_TEMPLATE = '<div class="hero-unit" style="text-align:center">'+
+		'<h2><i class="icon-frown"></i> Item Not Found</h2>'+
+		'<p>The item you requested could not be found.  It is possible it has been taken down. '+
+		'Please try another search.</p>'+
+		'<a class="btn btn-large btn-primary" href="#search"><i class="icon-search"></i> Back to Search</a>'
+		'</div>';
+
 	function init(h) {
 		host = h;
 		$.get(host ? host+'/handlebars_result.html' : '/handlebars_result.html', function(template){
@@ -88,9 +95,14 @@ CERES.result = (function() {
 			}
 		});
 		
-		$(window).bind('result-update-event', function(e, result){
-			updateResult(result);
+		$(window).bind('result-update-event', function(e, result, error){
+			if( error ) return setError();
+			else updateResult(result);
 		});
+	}
+
+	function setError() {
+		$("#"+CERES.mqe.getResultPage()).html(ERROR_TEMPLATE);
 	}
 	
 	// fires when template is loaded

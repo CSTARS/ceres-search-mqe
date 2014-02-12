@@ -46,10 +46,24 @@ CERES.search = (function() {
 	
 	var mapServiceTypes = ["MapServer","ImageServer","GeocodeServer","FeatureServer","GeometryServer",
           					"GeoDataServer","MobileServer","IndexGenerator","IndexingLauncher","SearchServer",
-          					"NAServer","GPServer","GlobeServer","Map Service"];
+          					"NAServer","GPServer","GlobeServer","Map Service", "map service"];
 	
 	var filterLabels = {
 		filter_resources : "Resource" 
+	};
+
+	var iconMap = {
+		metadata : 'code',
+		kml      : 'globe',
+		download : 'download-alt',
+		other    : 'cogs',
+		document : 'file',
+		documentation : 'copy',
+		website  : 'link',
+		html     : 'link',
+		link     : 'link',
+		preview  : 'picture',
+		zip      : 'archive'
 	}
 
 	// template functions
@@ -135,7 +149,7 @@ CERES.search = (function() {
 				key = j;
 				f = query.filters[i][j]; 
 			}
-			
+
 			if( key == 'Centroid' ) {
 				var btn = '<div class="btn-group" style="margin:0 5px 5px 0"><a class="btn btn-primary btn-small dropdown-toggle" data-toggle="dropdown" href="#"> Location Filter'+
 								' <span class="caret"></span></a><ul class="dropdown-menu" style="z-index:2000">' +
@@ -205,15 +219,17 @@ CERES.search = (function() {
 				query.filters.push(filter);
 				
 				if( i == 5 ) {
-					var link = $("<li><a id='filter-all-"+safeKey+"' style='cursor:pointer'>[See All]</a></li>");
+					var link = $("<li><a id='filter-all-"+safeKey+"' style='cursor:pointer;text-decoration:none'>[See All]</a></li>");
 					block.append(link);
 					link.find("a").on('click', function(){
 						_showAllFilters($(this).attr("id").replace(/filter-all-/,''));
 					});
 				} else if ( i < 5 ) {
-					block.append($("<li><a href='"+CERES.mqe.queryToUrlString(query)+"'><span class='filter'>"+item.filter+"</span>&nbsp;&nbsp;<span class='label'>"+item.count+"</span></a></li>"));
+					block.append($("<li><a style='text-decoration:none' href='"+CERES.mqe.queryToUrlString(query)+"'><span class='filter'>"+
+						item.filter+"</span>&nbsp;&nbsp;<span class='label'>"+item.count+"</span></a></li>"));
 				} 
-				allFilterLinks[safeKey].push({filter:item.filter, link:"<a href='"+CERES.mqe.queryToUrlString(query)+"' ><span class='filter'>"+item.filter+"</span>&nbsp;&nbsp;<span class='label'>"+item.count+"</span></a>"});
+				allFilterLinks[safeKey].push({filter:item.filter, link:"<a href='"+CERES.mqe.queryToUrlString(query)+
+					"' style='text-decoration:none'><span class='filter'>"+item.filter+"</span>&nbsp;&nbsp;<span class='label'>"+item.count+"</span></a>"});
 				
 			}
 			
@@ -278,7 +294,8 @@ CERES.search = (function() {
 		var c = $("#all-filters-content");
 		
 		for( var i = 0; i < filters.length; i++  ) {
-			c.append($("<div style='padding:10px; ' class='all-filters-content-filter' value='"+filters[i].filter+"'><i class='icon-filter' style='color:#ccc'></i> <span>"+filters[i].link+"</span></div>"));
+			c.append($("<div style='padding:10px; ' class='all-filters-content-filter' value='"+filters[i].filter+
+				"'><i class='icon-filter' style='color:#ccc'></i> <span>"+filters[i].link+"</span></div>"));
 		}
 
 		$(".all-filters-content-filter").on('click', function(){
@@ -408,6 +425,8 @@ CERES.search = (function() {
 			
 			if( item["Map Service"] && item["Map Service"].length > 0  ) {
 				_addMapPreview(itemPanel, item.id, item["Map Service"][0], item.hasPreview);
+			} else if( item["map service"] && item["map service"].length > 0  ) {
+				_addMapPreview(itemPanel, item.id, item["map service"][0], item.hasPreview);
 			} else if( item["MapServer"] && item["MapServer"].length > 0  ) {
 				_addMapPreview(itemPanel, item.id,  item["MapServer"][0], item.hasPreview);
 			} else if( item.Preview &&  item.Preview.length > 0 ) {
@@ -488,14 +507,8 @@ CERES.search = (function() {
 	}
 	
 	function _getResourceIcon(r) {
-		if( r == 'Metadata' ) return "<i class='icon-code'></i> ";
-		if( r == 'KML' ) return "<i class='icon-globe'></i> ";
-		if( r == 'Download' ) return "<i class='icon-download-alt'></i> ";
-		if( r == 'Other' ) return "<i class='icon-cogs'></i> ";
-		if( r == 'Document' ) return "<i class='icon-file'></i> ";
-		if( r == 'Documentation' ) return "<i class='icon-copy'></i> ";
-		if( r == 'Website' ) return "<i class='icon-link'></i> ";
-		if( r == 'Preview' ) return "<i class='icon-picture'></i> ";
+		r = r.toLowerCase();
+		if( iconMap[r] ) return "<i class='icon-"+iconMap[r]+"'></i> ";
 		if( mapServiceTypes.indexOf(r) > -1 ) return "<i class='icon-cloud'></i> ";
 		return "";
 	}

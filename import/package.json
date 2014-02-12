@@ -5,7 +5,7 @@
   "description": "Ceres Library Search Cbase Import",
   "dependencies" : {
     "mongodb"           : "*",
-    "pg"                      : "*",
-    "proj4js"               : "*"
+    "pg"                : "*",
+    "proj4"             : "*"
   }
 }

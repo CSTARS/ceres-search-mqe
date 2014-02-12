@@ -2,6 +2,9 @@ var tokenConfig = require("/etc/mqe/tokens.js");
 exports.debug = true;
 
 exports.db = {
+    // script that starts mongo
+    initd           : "mongod",
+
 	// connection string for the database, includes database name
 	url             : "mongodb://localhost:27017/ceresSearch",
 	

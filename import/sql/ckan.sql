@@ -1,14 +1,10 @@
 set search_path=public;
 
+create extension if not exists postgis;
+create extension if not exists plsh;
+create extension if not exists json_build;
 -- Foreign Stuff
 create extension if not exists postgres_fdw;
-
-create server ckan_development
-FOREIGN DATA WRAPPER postgres_fdw 
-OPTIONS (
-	host 'ckan.casil.ucdavis.edu', 
-	dbname 'ckan_development', 
-	port '5432');
 
 create server ceic
 FOREIGN DATA WRAPPER postgres_fdw 
@@ -18,13 +14,23 @@ OPTIONS (
 	port '5432');
 
 
-create user mapping for quinn 
-server ckan_development
-options (user 'quinn',password 'r6ikQDjLv9fu');
+drop schema e cascade;
+create schema e;
+
+drop schema ckan cascade;
+create schema ckan;
 
 create user mapping for quinn 
 server ceic
 options (user 'quinn',password 'r6ikQDjLv9fu');
+
+create foreign table if not exists e."vocabulary" (
+    id text NOT NULL,
+    name text NOT NULL
+) server ceic
+OPTIONS (
+	schema_name 'public'
+);
 
 create foreign table if not exists e."user" (
     id text NOT NULL,
@@ -39,7 +45,7 @@ create foreign table if not exists e."user" (
     reset_key text,
     sysadmin boolean DEFAULT false,
     activity_streams_email_notifications boolean DEFAULT false
-) server :ckan_server
+) server ceic
 OPTIONS (
 	schema_name 'public'
 );
@@ -56,7 +62,7 @@ CREATE foreign table if not exists e."group" (
     approval_status text,
     image_url text,
     is_organization boolean DEFAULT false
-) server :ckan_server
+) server ceic
 OPTIONS (
 	schema_name 'public'
 );
@@ -79,7 +85,7 @@ CREATE foreign TABLE if not exists e.package (
     type text,
     owner_org text,
     private boolean DEFAULT false
-) server :ckan_server
+) server ceic
 OPTIONS (
 	schema_name 'public'
 );
@@ -113,6 +119,13 @@ $$ LANGUAGE plsh;
 drop schema ckan cascade;
 create schema ckan;
 set search_path=ckan,public;
+
+create table ckan.dataset_keep(
+id integer,
+keep boolean,
+title text);
+
+\COPY ckan.dataset_keep from dataset_keep.csv with csv header
 
 create or replace view ckan.user as 
 with last as (
@@ -262,8 +275,33 @@ top AS (
 SELECT t.dataset_id, t.themekt::text AS vocabulary_id,v.term AS name
 FROM v
 JOIN t ON lower(t.themekey::text) = lower(v.term)
+),
+contrib as (
+select dataset_id::numeric,'Contributor'::text as vocabulary_id,
+name 
+from ceic.dataset_org 
+where name ~ E'^[a-zA-Z1-9 _\.\-]+$'
 )
-SELECT * from top;
+select dataset_id,vocabulary_id,name from top
+union
+select dataset_id,vocabulary_id,name from contrib;
+
+-- create or replace view dataset_orgs as 
+-- with a as (
+--  select term,
+--  regexp_replace(regexp_replace(coalesce(searchon,term),',\s*$',''),
+--                 ', ([A-Z]+)$',' \1') as new 
+--  from ceic.publisher
+-- )
+-- ,
+-- f(new,rep) as (
+--  VALUES('California Department of Fish and Game, DFG, California Department of Fish and Wildlife [DFW]','California Department of Fish and Game [DFG]'),
+--  ('CalEPA,Cal EPA','CalEPA')
+-- ) 
+-- select coalesce(rep,new) as term 
+-- from a 
+-- left join f using (new);
+
 
 -- create or replace view dataset_themes as
 -- with nt AS (
@@ -291,8 +329,8 @@ SELECT * from top;
 
 -- Bounding Box needs to come from dataset_places
 -- Use clips only sum up.
-create view ckan.dataset_is_public as 
-select i.id as dataset_id,
+create or replace view ckan.dataset_is_public as 
+select i.id as id,
 CASE when (i.ispublic and n.is_public = 1) then true 
 else false END as public 
 from ceic.dataset i join ceic.ceic_node n on (i.ceic_node_id = n.id);
@@ -335,7 +373,7 @@ build_json_object('org_name',cg.name)
 from ceic.dataset i
 left join ckan.dataset_spatial s on (i.id= s.dataset_id)
 left join public.groups gg on (gg.group_id=i.gforge_group_id)
-left join public."group" cg on (gg.unix_group_name=cg.name);
+left join e."group" cg on (gg.unix_group_name=cg.name);
 
 create view ckan.dataset_tags as 
 select dataset_id as id,
@@ -345,6 +383,7 @@ build_json_object('vocabulary_id',vocabulary_id,'name',name)))
 as tags
 from ckan.dataset_topics t 
 group by dataset_id;
+
 
 create or replace view ceic.dataset_resources as 
 select dataset_id as id,
@@ -365,7 +404,7 @@ id,
 ceic_node_id,
 left(regexp_replace(
      regexp_replace(lower(trim(both from i.title)),'[^a-z_0-9]+','_','g'),
-                   '([^_][^_][^_][^_])[^_]+(_|$)','\1\2','g'),99) as name 
+                   '([^_][^_][^_][^_])[^_]+(_|$)','\1\2','g'),95) as name 
 from 
 ceic.dataset i join
 ckan.dataset_keep using (id)
@@ -374,12 +413,12 @@ where keep is true
 r as (
 select id,
 name,
-rank() over (partition by ceic_node_id,name order by id) 
+row_number() over (partition by name order by id) 
 from n
 ),
 idd as (
 select id,
-case when (rank>1) then name || '_'|| rank ELSE name END as name
+case when (row_number>1) then name || '_'|| row_number ELSE name END as name
 from r
 )
 SELECT
@@ -390,6 +429,7 @@ SELECT
  i.data_name as maintainer,
  i.data_email as maintainer_email,
 -- license_id,
+not(p.public) as private,
 i.abstract as notes,
 'active'::text as state,
 'dataset'::text as type,
@@ -405,6 +445,7 @@ join idd using (id)
 left join ckan.dataset_tags t using (id)
 left join ckan.dataset_extras e using (id)
 left join ckan.dataset_resources r using (id)
+left join ckan.dataset_is_public p using (id)
 join ceic.ceic_node n on (i.ceic_node_id=n.id)
 join e."group" cg on (lower(n.shortname)=cg.name);
 
@@ -414,20 +455,97 @@ as select row_to_json(d) as package
 from 
 ckan.datasets d;
 
-
--- To install
-with k as (
- select apikey from e."user" where name='quinn'
+create or replace view ckan.vocabulary as 
+with keep as (
+select id as dataset_id 
+ from ceic.dataset i
+ join dataset_keep using (id) 
+ where keep is true
+),
+a as (
+ select distinct vocabulary_id,
+ regexp_replace(name,' & ',' and ') as name 
+ from ckan.dataset_topics
+ join keep using (dataset_id)
+ where name ~ '^[A-Za-z0-9 ]+$'
+ order by vocabulary_id,name
 ) 
 select 
-ckan_api_sh('ceic.casil.ucdavis.edu','user_create',c.user::text,apikey) 
-from ckan."user" c,k;
+ vocabulary_id,
+ build_json_object('name',vocabulary_id,
+ 'tags',array_to_json(array_agg(
+    build_json_object('name',name)))) as vocabulary  
+from a 
+group by vocabulary_id;
 
-with k as (
- select apikey from e."user" where name='quinn'
+create or replace view ckan.tag as 
+with keep as (
+select id as dataset_id 
+ from ceic.dataset i
+ join dataset_keep using (id) 
+ where keep is true
+),
+a as (
+ select distinct vocabulary_id,
+ regexp_replace(name,' & ',' and ') as name 
+ from ckan.dataset_topics
+ join keep using (dataset_id)
+ order by vocabulary_id,name
 ) 
 select 
-ckan_api('ceic.casil.ucdavis.edu','organization_create',o.organization,apikey) 
-from ckan.organization o,k;
+ a.vocabulary_id,
+ a.name,
+ build_json_object('vocabulary_id',v.id,
+ 'name',a.name) as tag 
+from a join e.vocabulary v on (a.vocabulary_id=v.name) ;
 
--- psql -d gforge -c 'select to_json(array_agg(package)) from ckan.package' > ckan_package.json
+-- -- To install
+-- with k as (
+--  select apikey from e."user" where name='quinn'
+-- ) 
+-- select 
+-- ckan_api_sh('ceic.casil.ucdavis.edu','vocabulary_create',v.vocabulary::text,
+-- 	apikey) 
+-- from ckan.vocabulary v,k;
+
+-- You may want to install one at a time:
+--with k as (
+-- select apikey from e."user" where name='quinn'
+--) 
+--select 
+--ckan_api('ceic.casil.ucdavis.edu','tag_create',t.tag,
+--apikey) 
+--from ckan.tag t,k where vocabulary_id='Contributor';
+
+
+-- with k as (
+--  select apikey from e."user" where name='quinn'
+-- ) 
+-- select 
+-- ckan_api_sh('ceic.casil.ucdavis.edu','user_create',c.user::text,apikey) 
+-- from ckan."user" c,k;
+
+-- with k as (
+--  select apikey from e."user" where name='quinn'
+-- ) 
+-- select 
+-- ckan_api('ceic.casil.ucdavis.edu','organization_create',o.organization,apikey) 
+-- from ckan.organization o,k;
+
+
+-- with k as (
+-- select apikey from e."user" where name='quinn'
+-- ),
+-- p as (
+--  select p.owner_org as org_id,
+--   array_agg(p.id) as datasets 
+--  from e.package p join ckan.datasets d using (name) 
+--  where d.private is true 
+--  group by p.owner_org),
+-- j as (select row_to_json(p) as priv from p)
+-- select 
+-- ckan_api('ceic.casil.ucdavis.edu','bulk_update_private',priv,apikey) 
+-- from j,k;
+
+-- psql -t -A --pset=footer -d gforge -c 'select to_json(array_agg(package)) from ckan.package' > ckan_package.json
+

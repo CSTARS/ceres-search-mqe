@@ -1,6 +1,8 @@
 var tokenConfig = require("/etc/mqe/tokens.js");
 exports.debug = true;
 
+exports.node = "node";
+
 exports.db = {
     // script that starts mongo
     initd           : "mongod",

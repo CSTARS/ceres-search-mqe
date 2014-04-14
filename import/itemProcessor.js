@@ -6,23 +6,34 @@ exports.process = function(item) {
 
 	item.id = item.ckan_id;
 
-	item.resources = [];
+	item.Resource = [];
 	for( var i = 0; i < resources.length; i++ ) {
 		var r = resources[i];
 
-		if( r.resource_type) {
-			var type = r.resource_type.replace(/\./g,'_');
-			if( item.resources.indexOf(type) == -1 ) {
-				item.resources.push(type);
-				item[type] = [];
+		if( r.format ) {
+			var format = r.format.toLowerCase();
+			if( item.Resource.indexOf(format) == -1 ) {
+				item.Resource.push(format);
+				item[format] = [];
 			}
-			item[type].push(r.url);
+			item[format].push(r.url);
 		}
-
-		if( r.mimetype ) {
-			var mime = r.mimetype.replace(/;.*/,'');
-			if( !item.mimetypes ) item.mimetypes = [];
-			if( item.mimetypes.indexOf(mime) == -1 ) item.mimetypes.push(mime);
-		} 
 	}
+
+	if( item.organization ) {
+		if( typeof item.Publisher == 'string' ) {
+			item.Publisher = [item.Publisher];
+			item.Publisher.push(item.organization);
+		} else {
+			item.Publisher = [item.organization];
+		}
+		delete item.organization;
+	} 
+
+	if( item.extras.spatial ) {
+		try {
+			item.Centroid = JSON.parse(item.extras.spatial);
+		} catch (e) {}
+	}
+
 }

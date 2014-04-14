@@ -1,6 +1,8 @@
 exports.debug = true;
 
 exports.db = {
+	initd           : "mongod",
+
 	// connection string for the database, includes database name
 	url             : "mongodb://localhost:27017/ceresSearchCkan",
 	
@@ -16,7 +18,7 @@ exports.db = {
 	
 	// Filters your site uses, these will be returned in the results
 	// MQE will also use this list to make sure indexes are built on these items
-	indexedFilters  : ["filter_resources", "Publisher", "Topic", "mimetypes", "organization"],
+	indexedFilters  : ["Resource", "Publisher", "Topic"],
 	
 	/// filter used for geographic queries
 	geoFilter : "Centroid",
@@ -58,6 +60,8 @@ exports.import = {
 	itemProcessor : '/Users/jrmerz/dev/ceres/ceres-search-mqe-ckan/import/itemProcessor.js',
 
 	statsCollection : 'items_import_stats',
+
+	verbose : true,
 
 	hour   : "*",
 	minute : 10,

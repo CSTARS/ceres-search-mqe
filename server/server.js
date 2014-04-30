@@ -11,6 +11,8 @@ var fs = require("fs");
 var ObjectId = require('mongodb').ObjectID;
 var nodemailer;
 
+var server;
+
 if( config.email ) {
 	nodemailer = require("nodemailer");
 	// create reusable transport method (opens pool of SMTP connections)
@@ -27,7 +29,8 @@ if( config.auth ) {
 }
 
 // express app
-exports.bootstrap = function(server) {
+exports.bootstrap = function(svr) {
+	server = svr;
 	var db = server.mqe.getDatabase();
 	
 	var collection;
@@ -36,32 +39,32 @@ exports.bootstrap = function(server) {
 	var statsCollection;
 	
 	db.collection(config.db.mainCollection, function(err, coll) { 
-		if( err ) return console.log(err);
+		if( err ) return server.logger.error(err);
 
 		collection = coll;
 	});
 	
 	db.collection(config.db.editCollection, function(err, coll) { 
-		if( err ) return console.log(err);
+		if( err ) return server.logger.error(err);
 
 		editCollection = coll;
 	});
 	
 	db.collection(config.db.cacheCollection, function(err, coll) { 
-		if( err ) return console.log(err);
+		if( err ) return server.logger.error(err);
 
 		cacheCollection = coll;
 	});
 	
 	db.collection("items_update_stats", function(err, coll) { 
-		if( err ) return console.log(err);
+		if( err ) return server.logger.error(err);
 
 		statsCollection = coll;
 	});
 	
 	// make sure their is a an index one the id attribute.  It's used in import
 	collection.ensureIndex( {id: 1}, function(err) {
-		if( err ) console.log(err);
+		if( err ) server.logger.error(err);
 	});
 	
 	// embed url functionality
@@ -84,10 +87,6 @@ exports.bootstrap = function(server) {
 	server.app.get('/rest/stats', function(req, res){
 		var start = new Date(req.query.start + "T00:00:00.000Z");
 		var end = new Date(req.query.end + "T00:00:00.000Z");
-		
-		console.log(start.toDateString());
-		console.log(end.toDateString());
-		
 		
 		var q = {"timestamp": {$gte:start, $lt: end }};
 		statsCollection.find(q).toArray(function(err, items) {
@@ -221,9 +220,9 @@ function notifyUpdate(item) {
 	// send mail with defined transport object
 	smtpTransport.sendMail(mailOptions, function(error, response){
 	    if(error){
-	        console.log(error);
+	        server.logger.error(error);
 	    }else{
-	        console.log("Message sent: " + response.message);
+	        server.logger.log("Message sent: " + response.message);
 	    }
 	});
 }

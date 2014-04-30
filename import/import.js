@@ -14,6 +14,7 @@ var mapServiceTypes = ["MapServer","ImageServer","GeocodeServer","FeatureServer"
      					"GeoDataServer","MobileServer","IndexGenerator","IndexingLauncher","SearchServer",
      					"NAServer","GPServer","GlobeServer","Map Service"];
 
+
 function runImport() {
 	lastRun = new Date();
 	count = {

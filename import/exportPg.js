@@ -128,7 +128,7 @@ function projectCentroid(item) {
 	
 	var point = parts[1].replace(/\)$/,'').split(" ");
 	
-	point = Proj4js.transform(proj, Proj4js.WGS84, new Proj4js.Point([parseFloat(point[0]),parseFloat(point[1])]));
+	point = Proj4js.transform(proj, Proj4js.WGS84, new Proj4js.toPoint([parseFloat(point[0]),parseFloat(point[1])]));
 	
 	item.Centroid = { 
 			type : "Point",

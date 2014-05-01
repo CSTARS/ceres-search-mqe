@@ -35,7 +35,6 @@ exports.bootstrap = function(svr) {
 	
 	var collection;
 	var editCollection;
-	var cacheCollection;
 	var statsCollection;
 	
 	db.collection(config.db.mainCollection, function(err, coll) { 
@@ -48,12 +47,6 @@ exports.bootstrap = function(svr) {
 		if( err ) return server.logger.error(err);
 
 		editCollection = coll;
-	});
-	
-	db.collection(config.db.cacheCollection, function(err, coll) { 
-		if( err ) return server.logger.error(err);
-
-		cacheCollection = coll;
 	});
 	
 	db.collection("items_update_stats", function(err, coll) { 

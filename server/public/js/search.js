@@ -194,7 +194,6 @@ CERES.search = (function() {
 			return 0;
 		});
 		
-
 		// add filter blocks
 		var c = 0;
 		for( c = 0; c < list.length; c++ ) {
@@ -225,11 +224,16 @@ CERES.search = (function() {
 						_showAllFilters($(this).attr("id").replace(/filter-all-/,''));
 					});
 				} else if ( i < 5 ) {
-					block.append($("<li><a style='text-decoration:none' href='"+CERES.mqe.queryToUrlString(query)+"'><span class='filter'>"+
-						item.filter+"</span>&nbsp;&nbsp;<span class='label'>"+item.count+"</span></a></li>"));
+					block.append(
+						$("<li><a style='text-decoration:none' href='"+CERES.mqe.queryToUrlString(query)+"'>"+
+							"<span class='filter'>"+item.filter+"</span>"+
+							(results.truncated ? "" : "&nbsp;&nbsp;<span class='label'>"+item.count+"</span>")+
+							"</a></li>"));
 				} 
 				allFilterLinks[safeKey].push({filter:item.filter, link:"<a href='"+CERES.mqe.queryToUrlString(query)+
-					"' style='text-decoration:none'><span class='filter'>"+item.filter+"</span>&nbsp;&nbsp;<span class='label'>"+item.count+"</span></a>"});
+					"' style='text-decoration:none'><span class='filter'>"+item.filter+"</span>"+
+					(results.truncated ? "" : "&nbsp;&nbsp;<span class='label'>"+item.count+"</span>")+
+					"</a>"});
 				
 			}
 			
@@ -278,7 +282,7 @@ CERES.search = (function() {
 			return 0;
 		});
 		
-		$("#all-filters-header").html($("#filter-block-title-"+blockId).text().replace(/^By/,'All')+
+		$("#all-filters-header").html($("#filter-block-title-"+blockId).text().replace(/^By/,'')+
 				" Filters<br /><span style='font-size:16px'>Search</span> <input type='text' class='all-filter-search' style='height:30px;margin:10px 0' />");
 		$("#all-filters-header").find('.all-filter-search').on('keyup', function(){
 			var search = $(this).val().length == 0 ? ".*" : ".*"+$(this).val().toLowerCase()+".*";

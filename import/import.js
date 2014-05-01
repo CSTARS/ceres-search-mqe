@@ -192,9 +192,7 @@ function onComplete(err, collection) {
 	if( err ) return writeLog(err);
 	
 	removeItems(collection, function(){
-		clearCache(function(){
-			writeLog();
-		});
+		writeLog();
 	});
 }
 
@@ -240,19 +238,6 @@ function removeItems(collection, callback) {
 		    });
 		}
 		
-	});
-}
-
-
-function clearCache(callback) {
-	if( count.update == 0 && count.remove == 0 && count.insert  == 0) return callback();
-	
-	log("Clearing cache: "+config.db.cacheCollection);
-	db.collection(config.db.cacheCollection, function(err, collection) { 
-		collection.remove({},function(err, removed){
-			if( err ) log({error:true,message:"Error clearing cache collection: "+config.db.cacheCollection,errObj:err});
-			callback();
-	    });
 	});
 }
 

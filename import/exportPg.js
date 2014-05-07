@@ -30,9 +30,12 @@ exports.getData = function(callback) {
 	client.connect(function(err) {
 	  if(err) return callback({error:true, message:'could not connect to postgres', errObj: err});
 	  
+	  console.log(pgQueryString);
 	  client.query(pgQueryString, function(err, result) {
 	    if(err) return callback({error:true, message:'error running pg query: '+pgQueryString, errObj: err});
 	
+	    console.log(result.rows.length);
+
 		var success = 0;
 		var error = 0;
 		var arr = []
@@ -40,6 +43,7 @@ exports.getData = function(callback) {
 	    for( var i = 0; i < result.rows.length; i++ ) {
 			try {
 			   var data = eval('('+clean(result.rows[i].json)+')');
+			   //var data = JSON.parse(result.rows[i].json);
 			   arr.push(createMqeItem(data,result.rows[i].score));
 			   success++;
 			} catch (e) {
@@ -85,7 +89,10 @@ function createMqeItem(data, score) {
 	}
 
 	// if there is a centroid, parse the string and project it
-	projectCentroid(item);
+	try {
+		projectCentroid(item);
+	} catch(e) {}
+	
 	
 	// combine map services
 	combineMapServices(item);
@@ -128,7 +135,7 @@ function projectCentroid(item) {
 	
 	var point = parts[1].replace(/\)$/,'').split(" ");
 	
-	point = Proj4js.transform(proj, Proj4js.WGS84, new Proj4js.toPoint([parseFloat(point[0]),parseFloat(point[1])]));
+	point = Proj4js.transform(proj, Proj4js.WGS84, new Proj4js.Point([parseFloat(point[0]),parseFloat(point[1])]));
 	
 	item.Centroid = { 
 			type : "Point",

@@ -67,9 +67,9 @@ exports.import = {
 	minute : 10,
 }
 
-exports.logging = {
-	dir : "/Users/jrmerz/dev/ceres/ceres-search-mqe/logs"
-}
+//exports.logging = {
+//	dir : "/Users/jrmerz/dev/ceres/ceres-search-mqe/logs"
+//}
 
 //auth server information
 //exports.auth = {

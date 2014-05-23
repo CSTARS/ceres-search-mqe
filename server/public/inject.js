@@ -36,7 +36,7 @@ CERES.css = [
 ];
 
 CERES.jquery = "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js";
-CERES.gmaps = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD-qr7GUVuG7hCLVwJkYoQaDZiRLwlGhCM&sensor=true";
+CERES.gmaps = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCf2En8KkOI8YXuI2zhpHNFQpnonJnl2cY&sensor=true";
 CERES.html = "html/main.html";
 CERES.host = "";
 CERES.root = "#anchor";
